@@ -1,5 +1,5 @@
 # MassDeployV1S-WP
-Proces to massively deploy V1S&WP agent to multiple linux EC@ using AWS SSM
+Proces to massively deploy **V1S&WP** agent to multiple **linux EC2** using **AWS SSM**
 
 This script and step-by-step was created based on the following AWS documentation:
 
@@ -58,6 +58,62 @@ Your should looks as follows:
 
 And click **Create role** to finish it
 
+# Trend Vision One
+
+
+# AWS S3 Bucket
+
+## Create an AWS S3 Bucket
+
+Create an AWS S3 bucket on the S3 service:
+    - https://s3.console.aws.amazon.com/s3/get-started?region=us-east-1&bucketType=general
+
+On the AWS S3 Page, click on the orange button that says **Create Bucket** on the right top
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/1f9a5d5a-f047-4773-903e-84a359df135b)
+
+On the **Create Bucket** Page, under **General configuration**, chose an **unique name** for your bucket
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/aa117ad7-4097-459c-b0b2-ec29906c018b)
+
+Under the **Block Public Access settings for this bucket** session,
+
+Tick off the **Block all public access** and tick the **acknowledgement** that object from this bucket may now be public.
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/8a4e6e0f-662c-41d0-9b37-03c9f42adeda)
+
+Now click on the Orange button that says **Create bucket** on the bottom right corner
+
+## Make the agent public on the AWS S3 Bucket
+
+Now is the time to make your agent public, so that all your accounts that need to access it may be able to download it. **Please do not store any other software, credential or classified information in the Bucket.**
+
+Enter on your recently created bucket.
+
+Look for the **Permissions Tab** and select it
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/7b0d62c0-6a2e-48e2-9082-71ef09318a7b)
+
+Under the BUcket policy session, click on Edit and add the following permission:
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "Allowobjectaccess",
+            "Effect": "Allow",
+            "Principal": "*",
+            "Action": "s3:GetObject",
+            "Resource": "**<YOURBUCKETARN>**/TMServerAgent_Linux.tar"
+        }
+    ]
+}
+
+Your should look somewhat like the following, but with your **BUCKET ARN** at the **Resource session** 
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/2d3e2211-6fda-4316-8c13-917c8c0b3da7)
+
+Now click on **Save Changes** at the bottom right corner
+
 # Run Command
 
 ## Script
@@ -72,15 +128,15 @@ AGENTINSTALLER="TMServerAgent*"
 if [ -d "$DIR" ]; then
     echo "Directory agentlinux exists"
     cd ~/$DIR
-    wget https://linuxs3csa.s3.amazonaws.com/TMServerAgent_Linux_auto_x86_64_MAIN_Workload.tar
-    tar -xvf TMServerAgent_Linux_auto_x86_64_MAIN_Workload.tar
+    wget https://**<YOUR BUCKET NAME>**.s3.amazonaws.com/TMServerAgent_Linux.tar
+    tar -xvf TMServerAgent_Linux.tar
     sudo ./tmxbc install;
 else 
     echo "Directory agentlinux does not exist, Creating directory"
     mkdir $DIR
     cd ~/$DIR
-    wget https://linuxs3csa.s3.amazonaws.com/TMServerAgent_Linux_auto_x86_64_MAIN_Workload.tar
-    tar -xvf TMServerAgent_Linux_auto_x86_64_MAIN_Workload.tar
+    wget https://**<YOUR BUCKET NAME>**.s3.amazonaws.com/TMServerAgent_Linux.tar
+    tar -xvf TMServerAgent_Linux.tar
     sudo ./tmxbc install;
 fi
 
