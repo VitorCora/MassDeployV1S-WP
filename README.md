@@ -23,15 +23,40 @@ Upload the Linux agent to an AWS S3 bucket accessible to the instances that will
 
 # Create an IAM role to enable EC2 to access AWS System Manager
 
+Go to the **IAM** service on your AWS console and click on **Roles**
+ - https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/roles
 
-Recommended Name
+On the **Roles** page click on **Create Role**
 
-EnablesEC2ToAccessSystemsManagerRole
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/2ec056d8-50ae-44ec-8a52-5554a186970c)
 
-Recommended Description
+Under **Select trusted entity**, select **AWS service**
 
-Enables an EC2 instance to access Systems Manager
+On the **Use case** selection, select **EC2**
 
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/dcfd853e-db23-425f-8d76-189e946a1cc7)
+
+Click on **Next**, at the bottom right corner
+
+On de **Add permissions** page, under the **Permissions policies**, look for the  **AmazonEC2RoleforSSM**, tick it and click on **Next**, at the bottom right corner
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/ae385a27-4171-4ae5-bb7d-29191d1d80a7)
+
+Now we are on the last page.
+
+On the page **Name, review, and create **
+
+Under the **Role Name** paste 
+ - EnablesEC2ToAccessSystemsManagerRole
+
+Under the **Description** paste 
+    - Enables an EC2 instance to access Systems Manager
+
+Your should looks as follows:
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/bf98cf7e-d2eb-4935-a7ee-e431530122b4)
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/67fc2d60-7784-415f-a250-bdbac6de5053)
+
+And click **Create role** to finish it
 
 # Run Command
 
@@ -59,6 +84,8 @@ else
     sudo ./tmxbc install;
 fi
 
+It should look like the following:
+
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/c8aeed3e-4ec1-40ec-a32a-cb01db4ffe31)
 
 Next step is to select the target instances
@@ -67,11 +94,15 @@ On the Target selection session you may choose based on "Instance TAGs", "Manual
 
 For this example I chose manually, but for a massive deployment the use of a TAG Key::Value pair is highly recommended (eg. TrendProtect::YES)
 
+It should look similar to the following:
+
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/ad7ed3b6-2cef-4020-949f-6e93514aed82)
 
 Next recommended session to be edited is Output options
 
 On the Outputs options session choose an AWS S3 bucket of your preference to store your logs, this will ensure that you will have full access to the log history and possible errors.
+
+It should look similar to the following:
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/dc02270b-e0c2-41bf-9a89-e061c2c57ca3)
 
