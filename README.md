@@ -1,9 +1,9 @@
 # MassDeployV1S-WP
-Script to massively deploy V1S&amp;WP agent to multiple linux EC@ using AWS SSM
+Proces to massively deploy V1S&WP agent to multiple linux EC@ using AWS SSM
 
-This script and step-by-step was created based on the following AWS documentation
+This script and step-by-step was created based on the following AWS documentation:
 
-https://aws.amazon.com/getting-started/hands-on/remotely-run-commands-ec2-instance-systems-manager/
+    - https://aws.amazon.com/getting-started/hands-on/remotely-run-commands-ec2-instance-systems-manager/
 
 We are going to be using AWS System Manager - Node Management - Run Command for the following activity (Can also be triggered through AWS System Manager - Node Management - Fleet Manager)
 
@@ -14,10 +14,10 @@ All your instances must have a role that allows AWS SSM to access and manage the
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/4f2bcfac-9f3c-4098-bd17-4fc747f0af30)
 
-Access to Trend Vision One
+Working Trend Vision One tenant
 *Steps to the creation of the tenant on the the Step ##
 
-Upload the Linux agent to an AWS S3 bucket that can be accessed by the instances that will be protected
+Upload the Linux agent to an AWS S3 bucket accessible to the instances that will be protected
 *Steps to download the agent on the Step ####
 * Steps to create and allow public access of the agent in the Step #####
 
@@ -33,7 +33,11 @@ Recommended Description
 Enables an EC2 instance to access Systems Manager
 
 
-# Script
+# Run Command
+
+## Script
+
+Copy and paste the following script into the Command Parameters session:
 
 #!/bin/bash
 
@@ -55,7 +59,31 @@ else
     sudo ./tmxbc install;
 fi
 
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/c8aeed3e-4ec1-40ec-a32a-cb01db4ffe31)
+
+Next step is to select the target instances
+
+On the Target selection session you may choose based on "Instance TAGs", "Manually"or based on "Resource Group".
+
+For this example I chose manually, but for a massive deployment the use of a TAG Key::Value pair is highly recommended (eg. TrendProtect::YES)
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/ad7ed3b6-2cef-4020-949f-6e93514aed82)
+
+Next recommended session to be edited is Output options
+
+On the Outputs options session choose an AWS S3 bucket of your preference to store your logs, this will ensure that you will have full access to the log history and possible errors.
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/dc02270b-e0c2-41bf-9a89-e061c2c57ca3)
+
+Final result:
+
+With Role IAM in the instances:
+
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/5633c1ef-16e3-4552-ad8e-1fa3433113e5)
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/13008120-11ac-414f-9baa-896033dd660f)
+
+Without the Role IAM to 4 of the 5 instances:
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/9aa4c9ef-a40b-44c7-acf9-0ff29dc9860b)
 
