@@ -174,3 +174,6 @@ Without the Role IAM to 4 of the 5 instances:
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/9aa4c9ef-a40b-44c7-acf9-0ff29dc9860b)
 
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/0e9ef3bf-23bb-4b84-8c2e-9a98bbb26d09)
+
+After testing both methods, my conclusion is that the role IAM is not necessary for this type of deployment, what ease the burden and make it simpler for the Cloud teams to deploy on scale.
