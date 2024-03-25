@@ -14,6 +14,8 @@ All your instances must have a role that allows AWS SSM to access and manage the
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/4f2bcfac-9f3c-4098-bd17-4fc747f0af30)
 
+** Further tests and analysis on my environment proved that the IAM role doesn`t need to be added to the instance, this pre requisite may be avoided for the sake of time
+
 Working Trend Vision One tenant
 *Steps to the creation of the tenant on the the Step ##
 
@@ -22,6 +24,8 @@ Upload the Linux agent to an AWS S3 bucket accessible to the instances that will
 * Steps to create and allow public access of the agent in the Step #####
 
 # Create an IAM role to enable EC2 to access AWS System Manager
+
+** Further tests and analysis on my environment proved that the IAM role doesn`t need to be added to the instance, this pre requisite may be avoided for the sake of time
 
 Go to the **IAM** service on your AWS console and click on **Roles**
  - https://us-east-1.console.aws.amazon.com/iam/home?region=us-east-1#/roles
@@ -58,10 +62,7 @@ Your should looks as follows:
 
 And click **Create role** to finish it
 
-# Trend Vision One
-
-
-# AWS S3 Bucket
+# AWS S3 Bucket - part 1
 
 ## Create an AWS S3 Bucket
 
@@ -83,6 +84,84 @@ Tick off the **Block all public access** and tick the **acknowledgement** that o
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/8a4e6e0f-662c-41d0-9b37-03c9f42adeda)
 
 Now click on the Orange button that says **Create bucket** on the bottom right corner
+
+# Trend Vision One
+
+## Create your Vision One instance
+
+
+## Enable Vision One Server & Workload Protection
+
+## Generate your Vision One Server & Workload Protection agent
+
+Log into your Vision One console and chose your tenant
+
+On your Vision One Tenant on the left-hand side, look for **Endpoint Security** in the Service column.
+
+Click on it and navigate to **Endpoint Inventory**
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/c897164c-8983-4c2c-b1dd-04a3acb9bc8f)
+
+On the Endpoint Inventory page, click On **Agent Installer** on the top right corner (Highlighted on yellow)
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/40c01fbb-0088-4a12-8813-5a8d98d8d000)
+
+A curtain will pop out:
+    - On **Server & Workload Protection**
+        - Select your **Operating system**: Linux
+        - Leave the **Auto dectect** selection ticked 
+        - **OS Architecture**: Select your instance architecture
+        - **Protection Manager**: Choose your Manager
+        - CLick on the Blue circle to **download installer**
+
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/bafee7bb-af25-48ee-a220-a836990a2595)
+
+After the download is ready, on your computer, rename the file as **TMServerAgent_Linux.tar**
+
+# AWS S3 Bucket - part 2
+
+## Upload the agent to your AWS S3 Bucket
+
+Now it is time to upload your agent to your AWS S3 Bucket.
+
+You may use console access or AWS CLI.
+
+## On the AWS Console, navigate to the AWS S3 page:
+    - https://s3.console.aws.amazon.com/s3/home?region=us-east-1#
+    - Locate your bucket and open it
+        ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/8208ee40-eb58-4dcf-82d7-684569da106a)
+    - Click on the yellow button on the Right side of the page that says **Upload**
+        ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/1c5076cc-4221-4c02-a528-7aa147db13b6)
+    - On the upload page click on Add files
+    - On the pop-up Find your Agent and click on Open
+        ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/9f1fdcc7-16b1-4ce8-a94d-400b6888445d)
+    - Now you just need to click on the Orange button that says **Upload** on the bottom of the page
+        ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/befd8585-1af0-4602-a0d4-6d7482dfbe97)
+
+You should have something similar to the following:
+    ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/2a1a2636-0961-4fc4-bcf7-c3e4eec0c079)
+
+## Using bash and AWS CLI
+
+### AWS CLI MV method
+
+On the bash, move to the folder where your Agent lives.
+
+On this folder run the following command:
+    - aws s3 mv TMServerAgent_Linux.tar s3://**<YOUR BUCKET NAME>**/TMServerAgent_Linux.tar
+        ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/983a639c-4a82-48d8-94be-dff7a2da96db)
+
+You should have something similar to the following:
+    ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/e26cd5e7-8ece-484e-8b19-a3a98a60b748)
+
+### AWS API PUT-OBJECT method
+
+On the bash, move to the folder where your Agent lives.
+
+On this folder run the following command:
+    - aws s3api put-object --bucket **<YOUR BUCKET NAME>** --key TMServerAgent_Linux.tar --body TMServerAgent_Linux.tar
+        ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/43f7eb16-9e35-46d6-ae06-7828e1e56b84)
+You should have something similar to the following:
+    ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/89983a30-4015-4bb2-a49d-a15fd3ad494b)
 
 ## Make the agent public on the AWS S3 Bucket
 
@@ -162,15 +241,15 @@ It should look similar to the following:
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/dc02270b-e0c2-41bf-9a89-e061c2c57ca3)
 
-Final result:
+# Final result:
 
-With Role IAM in the instances:
+## With Role IAM in the instances:
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/5633c1ef-16e3-4552-ad8e-1fa3433113e5)
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/13008120-11ac-414f-9baa-896033dd660f)
 
-Without the Role IAM to 4 of the 5 instances:
+## Without the Role IAM to 4 of the 5 instances:
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/9aa4c9ef-a40b-44c7-acf9-0ff29dc9860b)
 
