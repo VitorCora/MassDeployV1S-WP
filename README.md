@@ -220,6 +220,9 @@ else
     sudo ./tmxbc install;
 fi
 
+The script can also be found in the following link:
+    https://github.com/VitorCora/MassDeployV1S-WP/blob/main/DeployBasecamp.sh
+
 It should look like the following:
 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/c8aeed3e-4ec1-40ec-a32a-cb01db4ffe31)
