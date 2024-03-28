@@ -48,7 +48,7 @@ On de **Add permissions** page, under the **Permissions policies**, look for the
 
 Now we are on the last page.
 
-On the page **Name, review, and create **
+On the page **Name, review, and create**
 
 Under the **Role Name** paste 
  - EnablesEC2ToAccessSystemsManagerRole
@@ -176,6 +176,7 @@ Look for the **Permissions Tab** and select it
 Under the BUcket policy session, click on Edit and add the following permission:
 
 {
+
     "Version": "2012-10-17",
     "Statement": [
         {
