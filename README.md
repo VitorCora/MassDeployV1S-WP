@@ -127,8 +127,8 @@ You may use console access or AWS CLI.
 
 ## On the AWS Console, navigate to the AWS S3 page:
     - https://s3.console.aws.amazon.com/s3/home?region=us-east-1#
-    - Locate your bucket and open it
-        ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/8208ee40-eb58-4dcf-82d7-684569da106a)
+    - Locate your bucket and open it    
+![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/8208ee40-eb58-4dcf-82d7-684569da106a)        
     - Click on the yellow button on the Right side of the page that says **Upload**
         ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/1c5076cc-4221-4c02-a528-7aa147db13b6)
     - On the upload page click on Add files
@@ -175,8 +175,8 @@ Look for the **Permissions Tab** and select it
 
 Under the BUcket policy session, click on Edit and add the following permission:
 
+```
 {
-
     "Version": "2012-10-17",
     "Statement": [
         {
@@ -188,6 +188,7 @@ Under the BUcket policy session, click on Edit and add the following permission:
         }
     ]
 }
+```
 
 Your should look somewhat like the following, but with your **BUCKET ARN** at the **Resource session** 
 ![image](https://github.com/VitorCora/MassDeployV1S-WP/assets/59590152/2d3e2211-6fda-4316-8c13-917c8c0b3da7)
@@ -200,11 +201,10 @@ Now click on **Save Changes** at the bottom right corner
 
 Copy and paste the following script into the Command Parameters session:
 
-#!/bin/bash
-
-DIR="agentlinux"
-AGENTINSTALLER="TMServerAgent*"
-
+```
+#!/bin/bash /
+DIR="agentlinux" /
+AGENTINSTALLER="TMServerAgent*" /
 if [ -d "$DIR" ]; then
     echo "Directory agentlinux exists"
     cd ~/$DIR
@@ -217,11 +217,13 @@ else
     cd ~/$DIR
     wget https://**<YOUR BUCKET NAME>**.s3.amazonaws.com/TMServerAgent_Linux.tar
     tar -xvf TMServerAgent_Linux.tar
-    sudo ./tmxbc install;
+    sudo ./tmxbc install;   
 fi
+```
+
 
 The script can also be found in the following link:
-    https://github.com/VitorCora/MassDeployV1S-WP/blob/main/DeployBasecamp.sh
+   - https://github.com/VitorCora/MassDeployV1S-WP/blob/main/DeployBasecamp.sh
 
 It should look like the following:
 
